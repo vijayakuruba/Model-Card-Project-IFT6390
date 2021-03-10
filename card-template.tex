@@ -3,7 +3,7 @@
  \usepackage[T1]{fontenc}
  \usepackage{graphicx}
  \usepackage{geometry}
- \geometry{margin=1.5in}
+ \geometry{margin=1.0in}
  
  \setcounter{secnumdepth}{0}
 \setlength{\parindent}{0pt}
@@ -13,7 +13,7 @@
  \geometry{
  a4paper,
  total={170mm,257mm},
- left=50mm,
+ left=40mm,
  top=10mm,
  }
  % Used in the explanation text
@@ -65,10 +65,9 @@
  
  \begin{mcsection}{Model Details}
     \item Developed by Houda Saadaoui and  Vijaya Lakshmi Kuruba as an academic requirement of the course IFT 6390 at the University of Montreal in Winter 2021
-     \item  This is an exploratory SVM linear classifier which predicts the gender of the user based on its Tweets and profile description.
-     \item SKlearn API is utilised for model creation.
+     \item  This is an exploratory SVM linear classifier which predicts the gender of the user based on its Tweets and profile description.  
+     \item SKlearn API is utilised for model creation. We have used SGD classifier with Hinge loss with L2 penality.
      \item Released under MIT License
-     \item For any questions about the model, contact houda.saadaoui@umontreal.ca,\\vijaya.lakshmi.kuruba@unomtreal.ca 
 
  \end{mcsection}
  
@@ -91,7 +90,7 @@
      
      \item A ROC curve is constructed by plotting the true positive rate (TPR) against the false positive rate (FPR). ROC response of different datasets, created from K-fold cross-validation.
      
-     \item Model hyperparameter is tuned using RandomizedSearchCV by choosing the best alpha parameter in the followong list [1e-4, 1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3].
+     \item Model hyperparameter is tuned using GridSearchCV by choosing the best alpha. Alpha is the regularization term and learning rate.
      
  \end{mcsection}
  
@@ -103,7 +102,7 @@
      \item Text features where vectorized using all the dataset vocabulary 
 
  \end{mcsection}
-     \includegraphics[scale=0.42]{Crowd.png}
+     \includegraphics[scale=0.45]{Crowd.png}
     \includegraphics[scale=0.4]{feature_Importance.png}
  
  \begin{mcsection}{Evaluation Data}
@@ -112,7 +111,9 @@
      \item The model has an accuracy of ACCDONOTMODIFY \%
   
 
- \end{mcsection}
+ \end{mcsection}\pagebreak
+ 
+ 
  
  
  \begin{mcsection}{Ethical Considerations}
