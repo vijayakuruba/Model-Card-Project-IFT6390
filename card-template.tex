@@ -1,0 +1,130 @@
+\documentclass{article}
+ \usepackage[utf8]{inputenc}
+ \usepackage[T1]{fontenc}
+ \usepackage{graphicx}
+ 
+ % Used in the explanation text
+ \usepackage[colorlinks]{hyperref}
+ 
+ % Used by the template
+ \usepackage{setspace}
+ \usepackage{pgf}
+ \usepackage{changepage} % to adjust margins
+ \usepackage[breakable]{tcolorbox}
+ \usepackage{float}
+ \usepackage{enumitem}
+ 
+ \title{Model cards - Tweeter Gender Classification}
+ \author{Vijaya lakshmi Kuruba - Houda Saadaoui}
+ 
+ \date{March 2021}
+ 
+ \begin{document}
+ 
+ \maketitle
+ 
+ 
+ % Each section is supposed to be brief, in the form of a bullet list.
+ % This environment formats the lists in each model card section in a compact format to help
+ % the card fit into the recommended "one to two pages".
+ \newenvironment{mcsection}[1]
+     {%
+         \textbf{#1}
+ 
+         % Reduce margins to use the space more effectively and help fit in the recommended "one to two pages"
+         % Use the bullet list format as shown in the model card paper to increase readability
+         \begin{itemize}[leftmargin=*,topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,after=\vspace{\medskipamount}]
+     }
+     {%
+         \end{itemize}
+     }
+ 
+ % Optional: reduce margins single line to fit in "one to two pages", as recommended
+ \begin{adjustwidth}{-60pt}{-30pt}
+ \begin{singlespace}
+ 
+ \tcbset{colback=white!10!white}
+ \begin{tcolorbox}[title=\textbf{Model Card - Tweeter Gender Classification },
+     breakable, sharp corners, boxrule=0.7pt]
+ 
+ % Change to a smaller, but still legible font size to help fit in the recommended "one to two pages"
+ \small{
+ 
+ \begin{mcsection}{Model Details}
+    \item Developed by Houda Saadaoui and  Vijaya Lakshmi Kuruba as an academic requirement of the course IFT 6390 at the University of Montreal in Winter 2021
+     \item  This is an exploratory SVM linear classifier which predicts the gender of the user based on its Tweets and profile description.
+     \item SKlearn API is utilised for model creation.
+     \item Released under MIT License
+     \item For any questions about the model, contact houda.saadaoui@umontreal.ca,\\vijaya.lakshmi.kuruba@unomtreal.ca 
+
+ \end{mcsection}
+ 
+ \begin{mcsection}{Intended Use}
+     \item Intended to be used for anyone interested  in the relationship between type of writing and gender. 
+     \item Particularly intended for people who are interested in analysing social media use.
+  
+
+ \end{mcsection}
+ 
+ \begin{mcsection}{Factors}
+     \item The prediction of the model is within the scope of the social media users and particularly, Twitter user. 
+     Therefore, relevant factors are age and level of education as most of the Twitter users are young and have higher education.
+    \item Language is another relevant factor as the model was trained with English Tweets and English profile description
+
+ \end{mcsection}
+ 
+ \begin{mcsection}{Metrics}
+     \item Model is evaluated with reporting the accuracy score of the classifer.
+     
+     \item A ROC curve is constructed by plotting the true positive rate (TPR) against the false positive rate (FPR). ROC response of different datasets, created from K-fold cross-validation.Ref[1]
+     \item Model hyperparameter is tuned using RandomizedSearchCV by choosing the best alpha parameter in the followong list [1e-4, 1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3]
+     
+ \end{mcsection}
+ 
+ \begin{mcsection}{Training Data}
+     \item This model uses the dataset for the CrowdFlower AI team.  The dataset contains 20,000 random tweets and account profile with the label corresponding to the gender of the user.
+     \item Dataset was first filtred using only the gender ('male', 'female') as it has other irrelevent gender values
+     \item Dataset was preprocessed using the tweet-preprocessor library 
+     \item Dataset is split to 80-20 ratio to account for train and test data
+     \item Text features where vectorized using all the dataset vocabulary 
+
+ \end{mcsection}
+     \includegraphics[scale=0.45]{Crowd.png}
+    \includegraphics[scale=0.4]{ff.png}
+ 
+ \begin{mcsection}{Evaluation Data}
+   
+     \item Data is split to 80-20 ratio to account for train and test data
+     \item The model has an accuracy of ACCDONOTMODIFY \%
+  
+
+ \end{mcsection}
+ 
+ 
+ \begin{mcsection}{Ethical Considerations}
+     \item Because of the population in which the study was conducted, the results should be carefully generalized to more than one population.
+     \item In no case can this model be used to make decisions involving gender discrimination.
+ \end{mcsection}
+ 
+ \begin{mcsection}{Caveats and Recommendations}
+     \item We have considered only tweets and profile description for classification
+     \item Model performence can be improved by including more features based on exploratory analysis.
+      \item Model performence can be improved by using a larger dataset.
+ \end{mcsection}
+ 
+ \textbf{Quantitative Analyses}
+ 
+ \includegraphics[scale=0.28]{Loss.png} \includegraphics[scale=0.28]{Confusion-matrix.png}
+ \includegraphics[scale=0.28]{ROC_plot_Kfold.png}
+ % Sample table inside tcolorbox
+
+ 
+ } % end font size change
+ \end{tcolorbox}
+ \end{singlespace}
+ \end{adjustwidth}
+ 
+ 
+ 
+ \end{document}
+ 

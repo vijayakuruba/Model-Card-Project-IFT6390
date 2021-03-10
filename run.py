@@ -3,6 +3,7 @@ import sys
 import sklearn
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 import re
 import preprocessor as p
 from sklearn.feature_extraction.text import CountVectorizer
@@ -16,6 +17,7 @@ from pylatex import Document, Section, Subsection, Command
 from pylatex.utils import italic, NoEscape
 
 from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
@@ -23,34 +25,29 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import plot_roc_curve, plot_confusion_matrix
 from datetime import date
 from io import BytesIO
+from io import StringIO
 #from IPython import display
 import base64
-import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 import seaborn as sns
 import uuid
 from sklearn.metrics import auc
 import requests
 import io
-#import matplotlib
 import fileinput
-#matplotlib.rcParams.update({
-#    "pgf.texsystem": "pdflatex",
-#    'font.family': 'serif',
-#    'text.usetex': True,
-#    'pgf.rcfonts': False,
-#})
 
 
-################################
-# Complete the functions below #
-################################
 
 # Download/create the dataset
 def fetch():
   print("fetching dataset!")  # replace this with code to fetch the dataset
-  url = 'https://raw.githubusercontent.com/vijayakuruba/Model-Card-Project-IFT6390/main/gender-classifier-DFE-791531.csv'
+  url = 'https://raw.githubusercontent.com/vijayakuruba/Model-Card-Project-IFT6390/main/gender-classifier-DFE-791531.csv?token=ASG4UA4IH5AYNPSF7MSRENDAJAJKG'
+  mc = 'https://www.overleaf.com/read/pvkpxjytvcnt'
+  #mc_theory = 'https://raw.githubusercontent.com/vijayakuruba/Model-Card-Project-IFT6390/main/gender-classifier-DFE-791531.csv'
 
   wget.download(url)
+  wget.download(mc)
+  wget.download(mc)
   print("Download complete!")
 
 def clean_data(df):
@@ -73,8 +70,47 @@ def prepare_data(df):
  df["clean_text"] = df_text
  return df
 
+def wordcloud(X, y,vectorizer,x_transform):
+
+    df = pd.DataFrame({'Tweets':X, 'Gender':y})
+    all_tweets = " ".join(tweet for tweet in df['Tweets'])
+
+    tweets_wordcloud = WordCloud(background_color="white",
+                                 max_words=50,
+                                 collocations=False
+                                 ).generate(all_tweets)
+
+    # view the wordcloud
+    plt.imshow(tweets_wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.savefig('Crowd.png')
+
+    cv=vectorizer
+
+    word = cv.get_feature_names()
+
+    TFIDF_mean = np.mean(x_transform, axis=0)
+    TFIDF_mean = np.array(TFIDF_mean)[0].tolist()
+
+    # Feature_importance=top_feats(TFIDF_mean ,Word, Imp_Feat)
+
+    topn_ids = np.argsort(TFIDF_mean)[::-1][:1000]
+    names = np.array(word)
+    # print(names[topn_ids])
+    top_feats = [(word[i], TFIDF_mean[i]) for i in topn_ids]
+    df_feat = pd.DataFrame(top_feats, index=names[topn_ids])
+    df_feat.columns = ['FEATURE', 'Feat_IMP_value']
+
+    Feature_importance = df_feat
+    df_feat[:50].plot.bar(y='Feat_IMP_value', title='Feature Importances', rot=90)
+    plt.ylabel('Relative Feature Importance  ')
+    New_FI_index = Feature_importance.reset_index()
+    del New_FI_index['index']
+    plt.savefig('ff.png')
+
 # Train your model on the dataset
 def train():
+  import matplotlib.pyplot as plt
   print("training model!")  # replace this with code to train the model
 
   df = pd.read_csv("gender-classifier-DFE-791531.csv", encoding='iso-8859-1')
@@ -86,6 +122,7 @@ def train():
   y = df.query("gender == 'male' or gender == 'female'").gender.values
   X=df.query("gender == 'male' or gender == 'female'") 
   X = X['clean_tweet'].str.cat(X['clean_text'].fillna(""), sep=' ')
+  
 
   # We will need to convert words to vectors
   # Initialization of the countvectorizer
@@ -97,6 +134,8 @@ def train():
   # transform tweets and description to document-term matrix
   x_transform = vectorizer.transform(X)
 
+  # wordclouds for data:
+  wordcloud(X, y,vectorizer,x_transform)
 
   x_train, x_test, y_train, y_test = train_test_split(x_transform , y,
     stratify=y, 
@@ -104,16 +143,37 @@ def train():
 
   k_fold = KFold(n_splits=5, shuffle=True, random_state=1)
 
-  #svmc = svm.SVC(C=0.09, kernel = 'linear')
   svc = SGDClassifier()  #default L2 penality and Hinge loss
 
   print('Hyperparameter Search!')
-  alpha=hyperparametertuning(svc,k_fold,x_train,y_train)
+  alpha=hyperparametertuning(svc,k_fold,x_transform,y)
   print('Search Finished!')
 
+  old_stdout = sys.stdout
+  sys.stdout = mystdout = StringIO()
+
   # fitting the SVC model on the given training data
-  svmc = SGDClassifier(loss='hinge', penalty='l2', alpha=alpha)
+  svmc = SGDClassifier(loss='hinge', penalty='l2', alpha=alpha,verbose=1)
   svmc.fit(x_train, y_train)
+
+
+  sys.stdout = old_stdout
+  loss_history = mystdout.getvalue()
+
+  loss_list = []
+
+  for line in loss_history.split('\n'):
+      if (len(line.split("loss: ")) == 1):
+          continue
+      loss_list.append(float(line.split("loss: ")[-1]))
+
+  plt.plot(np.arange(len(loss_list)), loss_list)
+  plt.title("Learning Loss")
+  plt.xlabel("Number epochs");
+  plt.ylabel("Loss")
+  plt.savefig('Loss.png')
+
+
   # Prediction on samples x_test
   y_pred_svm = svmc.predict(x_test)
   #saving the predicted and the acutal results
@@ -121,25 +181,44 @@ def train():
   df['actual'] = y_test
   df.to_csv("train.csv")
 
+
+  plot_roc_curve(svmc, x_test, y_test)
+  plt.title("ROC on Test set")
+  plt.savefig('ROC_test.png')
+
   plt=validate(x_transform,y,svmc,k_fold)
-  plt.savefig('ROC-plot.png')
+  plt.savefig('ROC_plot_Kfold.png')
 
 
-def hyperparametertuning(svc,k_fold,x_train,y_train ):
+def hyperparametertuning(svc,k_fold,X,y):
 
     tuned_parameters = [
-        {'alpha': [1e-4, 1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3]} # learning rate
+        {'alpha': [1e-7,1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1]} # learning rate
     ]
 
-    grid_search = RandomizedSearchCV(
-        svc, tuned_parameters, n_iter=10, cv=k_fold,
+    grid_search = GridSearchCV(
+        svc, tuned_parameters, cv=k_fold,scoring='accuracy'
     )
-    grid_search.fit(x_train, y_train);
+    grid_search.fit(X, y);
     print('Finished!')
+
+    results = pd.DataFrame(grid_search.cv_results_['params'],columns=['alpha'])
+    results['test_score'] = grid_search.cv_results_['mean_test_score']
+    print(results)
 
     print("Best parameters set found on development set:")
     print(grid_search.best_params_)
     ck = grid_search.best_params_
+
+
+    #plt.plot(results['alpha'], results['test_score'])
+    #plt.xticks(np.arange(results['alpha'].min(), results['alpha'].max(), 0.00005))
+    #plt.legend()
+    #plt.xlabel('Alpha')
+    #plt.ylabel("Mean CV Score")
+    #plt.title("SVM Performance Comparison")
+    #plt.savefig('learning_versus_Meanscore.png')
+
     return ck.get('alpha')
 
 def validate(x_transform,y,svmc,k_fold):
@@ -184,11 +263,10 @@ def validate(x_transform,y,svmc,k_fold):
                     label=r'$\pm$ 1 std. dev.')
 
     ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05],
-           title="Receiver operating characteristic example")
+           title="Receiver operating characteristic SVM Classifier")
     ax.legend(loc="lower right")
 
     return plt
-
 
 
 # Compute the evaluation metrics and figures
@@ -196,14 +274,16 @@ def evaluate():
   print("evaluating model!")  # replace this with code to evaluate what must be evaluated
   df = pd.read_csv("train.csv", encoding='iso-8859-1')
   accuracy = accuracy_score(df['actual'], df['predictions']) * 100
-  print("Accuracy score for SVC is: ", accuracy, '%')
+  accuracy = round(accuracy, 2)
 
-  #dfresult = pd.DataFrame(accuracy, columns=['Accuracy'])
-  #dfresult.to_csv("results.csv")
-
+  print("Accuracy score on Test data for SVC is: ", accuracy, '%')
+  file = open('accuracy.txt', 'w') 
+  file.write(str(accuracy)) 
+  file.close() 
   conf_mat=confusion_matrix(df['actual'], df['predictions'],labels=["male", "female"])
   ConfusionMatrixDisplay(confusion_matrix=conf_mat,display_labels = ["male", "female"]).plot()
 
+  plt.title('Confusion-matrix')
   plt.savefig('Confusion-matrix.png')
 
 
@@ -212,12 +292,26 @@ def build_paper():
   print("building papers!")  # replace this with code to make the papers
  #df = pd.read_csv("results.csv", encoding='iso-8859-1')
   #accuracy = df['accuracy'][0]
-  accuracy = '64.56%'
-  print('accuracy is: ', accuracy)
-  for line in fileinput.input('model-card.tex', inplace=True):
-    print(line.replace('RESULTS-HERE', accuracy), end=' ')
+
+  file1 = open("accuracy.txt") 
+  # Reading from file  
+  accuracy = file1.read()
+  print('accuracy..:', accuracy)
+  file1.close()   
+
+  with open('card-template.tex','r') as myfile:
+     text = myfile.read()
+     text_new = text.replace('ACCDONOTMODIFY', accuracy)
+
+     with open('card.tex', 'w') as output:
+       output.write(text_new)
+
     
-  os.system("pdflatex model-card.tex")
+  #for line in fileinput.input('card.tex', inplace=True):
+   # print(line.replace('ACCDONOTMODIFY', accuracy), end=' ')
+
+  os.system("pdflatex card.tex")
+  os.system("pdflatex paper.tex")
 
 
 ###############################
