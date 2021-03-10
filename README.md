@@ -9,3 +9,5 @@ This is an exploratory SVM linear classifier which predicts the gender of the us
 4. Matplotlib
 5. Preprocessor
 6. Pylatex
+
+ For any questions about the model, contact houda.saadaoui@umontreal.ca, vijaya.lakshmi.kuruba@unomtreal.ca 
