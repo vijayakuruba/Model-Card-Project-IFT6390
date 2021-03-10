@@ -2,7 +2,20 @@
  \usepackage[utf8]{inputenc}
  \usepackage[T1]{fontenc}
  \usepackage{graphicx}
+ \usepackage{geometry}
+ \geometry{margin=1.5in}
  
+ \setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\usepackage{fancyhdr}
+\usepackage[top=1.5in,bottom=1in,right=1in,left=1in,headheight=65pt]{geometry}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=50mm,
+ top=10mm,
+ }
  % Used in the explanation text
  \usepackage[colorlinks]{hyperref}
  
@@ -76,8 +89,9 @@
  \begin{mcsection}{Metrics}
      \item Model is evaluated with reporting the accuracy score of the classifer.
      
-     \item A ROC curve is constructed by plotting the true positive rate (TPR) against the false positive rate (FPR). ROC response of different datasets, created from K-fold cross-validation.Ref[1]
-     \item Model hyperparameter is tuned using RandomizedSearchCV by choosing the best alpha parameter in the followong list [1e-4, 1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3]
+     \item A ROC curve is constructed by plotting the true positive rate (TPR) against the false positive rate (FPR). ROC response of different datasets, created from K-fold cross-validation.
+     
+     \item Model hyperparameter is tuned using RandomizedSearchCV by choosing the best alpha parameter in the followong list [1e-4, 1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3].
      
  \end{mcsection}
  
@@ -89,7 +103,7 @@
      \item Text features where vectorized using all the dataset vocabulary 
 
  \end{mcsection}
-     \includegraphics[scale=0.45]{Crowd.png}
+     \includegraphics[scale=0.42]{Crowd.png}
     \includegraphics[scale=0.4]{feature_Importance.png}
  
  \begin{mcsection}{Evaluation Data}
@@ -114,8 +128,8 @@
  
  \textbf{Quantitative Analyses}
  
- \includegraphics[scale=0.28]{Loss.png} \includegraphics[scale=0.28]{Confusion-matrix.png}
- \includegraphics[scale=0.28]{ROC_plot_Kfold.png}
+ \includegraphics[scale=0.3]{Loss.png} \includegraphics[scale=0.3]{Confusion-matrix.png}
+ \includegraphics[scale=0.2]{ROC_plot_Kfold.png}
  % Sample table inside tcolorbox
 
  
@@ -123,8 +137,7 @@
  \end{tcolorbox}
  \end{singlespace}
  \end{adjustwidth}
- 
- 
- 
+
+
  \end{document}
  
