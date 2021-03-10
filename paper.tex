@@ -7,6 +7,8 @@
 \usepackage{ulem}
 \usepackage{url}
 \usepackage{graphicx}
+ \usepackage{geometry}
+\geometry{margin=1.0in}
 
 \usepackage{lmodern}
 \usepackage[english]{babel}
@@ -58,8 +60,10 @@ Before building our model, we first cleaned the data using the following steps:
     \item Preprocessing the data using the Preprocessor library
 \end{itemize}
 
-After filtring and preprocessing the dataset, we ended up with 12,895 samples which we split into training and testing with 80\% and 20\% respectively of the dataset.  \\
+After filetring and preprocessing the dataset, we ended up with 12,895 samples which we split into training and testing with 80\% and 20\% respectively of the dataset.  \\
 We chose to use the linear classifier Support Vector Machine SVM to make the classification task.
+
+Model parameter is validated with K fold cross validation and classifier metrics has been reported.
 
 \paragraph{SVM Linear Classifier}: 
 
@@ -122,18 +126,6 @@ The training objective that we are going to minimize is the average of the losse
 Note:  Minimising w allows to maximize the margen
 
 where the parameter $\lambda$  determines the trade-off between increasing the margin size and ensuring that the $\mathbf {x} _{i}$ lie on the correct side of the margin. Thus, for sufficiently small values of $\lambda$ , the second term in the loss function will become negligible, hence, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not.
-
-\textbf{Primal Problem:}
-Minimizing (8) can be rewritten as a constrained optimization problem with a differentiable objective function in the following way.
-
-For each $ i\in \{1,\,\ldots ,\,n\}$ we introduce a variable $ \zeta _{i}=\max \left(0,1-y_{i}(\mathbf {w} ^{T}\mathbf {x} _{i}+b)\right)$. Note that $ \zeta _{i}$ is the smallest nonnegative number satisfying\\ $y_{i}(\mathbf {w} ^{T}\mathbf {x} _{i}+b)\geq 1-\zeta _{i}.$
-
-\begin{align}
-  L(w) = \frac{1}{n}\sum_{i=1}^n \zeta_i  + \frac{\lambda}{2} \| \mathbf{w}\|^2     
-\end{align}
-
- subject to  $ y_i (w^T \phi (x_i) + b) \geq 1 - \zeta_i and  \zeta_i \geq 0, i=1, ..., n$
-
 
 \textbf{Gradient Desecent:}  
 
