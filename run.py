@@ -41,13 +41,9 @@ import fileinput
 # Download/create the dataset
 def fetch():
   print("fetching dataset!")  # replace this with code to fetch the dataset
-  url = 'https://raw.githubusercontent.com/vijayakuruba/Model-Card-Project-IFT6390/main/gender-classifier-DFE-791531.csv?token=ASG4UA4IH5AYNPSF7MSRENDAJAJKG'
-  mc = 'https://www.overleaf.com/read/pvkpxjytvcnt'
-  #mc_theory = 'https://raw.githubusercontent.com/vijayakuruba/Model-Card-Project-IFT6390/main/gender-classifier-DFE-791531.csv'
+  url = 'https://raw.githubusercontent.com/vijayakuruba/Data/main/gender-classifier-DFE-791531.csv'
 
   wget.download(url)
-  wget.download(mc)
-  wget.download(mc)
   print("Download complete!")
 
 def clean_data(df):
@@ -106,7 +102,7 @@ def wordcloud(X, y,vectorizer,x_transform):
     plt.ylabel('Relative Feature Importance  ')
     New_FI_index = Feature_importance.reset_index()
     del New_FI_index['index']
-    plt.savefig('ff.png')
+    plt.savefig('feature_Importance.png')
 
 # Train your model on the dataset
 def train():
@@ -167,11 +163,15 @@ def train():
           continue
       loss_list.append(float(line.split("loss: ")[-1]))
 
-  plt.plot(np.arange(len(loss_list)), loss_list)
-  plt.title("Learning Loss")
-  plt.xlabel("Number epochs");
-  plt.ylabel("Loss")
-  plt.savefig('Loss.png')
+  fig, (ax1) = plt.subplots(1)
+  # fig.suptitle("Learning Loss")
+  ax1.plot(np.arange(len(loss_list)), loss_list)
+  #  plt.plot(np.arange(len(loss_list)), loss_list)
+  # ax1.legend("Learning Loss")
+  ax1.set_title('Learning Loss')
+  ax1.set_xlabel("Number epochs")
+  ax1.set_ylabel("Loss")
+  fig.savefig('Loss.png')
 
 
   # Prediction on samples x_test
@@ -182,9 +182,9 @@ def train():
   df.to_csv("train.csv")
 
 
-  plot_roc_curve(svmc, x_test, y_test)
-  plt.title("ROC on Test set")
-  plt.savefig('ROC_test.png')
+  #plot_roc_curve(svmc, x_test, y_test)
+  #plt.title("ROC on Test set")
+  #plt.savefig('ROC_test.png')
 
   plt=validate(x_transform,y,svmc,k_fold)
   plt.savefig('ROC_plot_Kfold.png')
@@ -233,8 +233,8 @@ def validate(x_transform,y,svmc,k_fold):
     aucs = []
     mean_fpr = np.linspace(0, 1, 100)
 
-    plt.figure(figsize=(8, 6))
-    fig, ax = plt.subplots()
+
+    fig, ax = plt.subplots(figsize=(8, 8))
     for i, (train, test) in enumerate(cv.split(x_transform, y)):
         svmc.fit(x_transform[train], y[train])
         viz = plot_roc_curve(svmc, x_transform[test], y[test],
