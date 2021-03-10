@@ -3,7 +3,8 @@
  \usepackage[T1]{fontenc}
  \usepackage{graphicx}
  \usepackage{geometry}
- \geometry{margin=1.0in}
+ \geometry{margin=0.8in}
+
  
  \setcounter{secnumdepth}{0}
 \setlength{\parindent}{0pt}
@@ -13,7 +14,7 @@
  \geometry{
  a4paper,
  total={170mm,257mm},
- left=40mm,
+ left=30mm,
  top=10mm,
  }
  % Used in the explanation text
@@ -27,15 +28,14 @@
  \usepackage{float}
  \usepackage{enumitem}
  
+ \usepackage{multicol}
+
  \title{Model cards - Tweeter Gender Classification}
  \author{Vijaya lakshmi Kuruba - Houda Saadaoui}
- 
- \date{March 2021}
- 
+
  \begin{document}
  
  \maketitle
- 
  
  % Each section is supposed to be brief, in the form of a bullet list.
  % This environment formats the lists in each model card section in a compact format to help
@@ -63,11 +63,12 @@
  % Change to a smaller, but still legible font size to help fit in the recommended "one to two pages"
  \small{
  
+ \begin{multicols}{2}
  \begin{mcsection}{Model Details}
-    \item Developed by Houda Saadaoui and  Vijaya Lakshmi Kuruba as an academic requirement of the course IFT 6390 at the University of Montreal in Winter 2021
+    \item Developed by Houda Saadaoui and  Vijaya Lakshmi Kuruba as an academic requirement of the course IFT 6390 at the University of Montreal in Winter 2021.
      \item  This is an exploratory SVM linear classifier which predicts the gender of the user based on its Tweets and profile description.  
-     \item SKlearn API is utilised for model creation. We have used SGD classifier with Hinge loss with L2 penality.
-     \item Released under MIT License
+     \item SKlearn API is utilised for model creation. We have used SGD classifier with Hinge loss with L2 penality which is equivalent to SVM linear classifier.
+     \item Released under MIT License.
 
  \end{mcsection}
  
@@ -96,14 +97,14 @@
  
  \begin{mcsection}{Training Data}
      \item This model uses the dataset for the CrowdFlower AI team.  The dataset contains 20,000 random tweets and account profile with the label corresponding to the gender of the user.
-     \item Dataset was first filtred using only the gender ('male', 'female') as it has other irrelevent gender values
-     \item Dataset was preprocessed using the tweet-preprocessor library 
-     \item Dataset is split to 80-20 ratio to account for train and test data
-     \item Text features where vectorized using all the dataset vocabulary 
+     \item Dataset is first filtred using only the gender ('male','female') as it has other irrelevent gender values
+     \item Dataset is preprocessed using the tweet-preprocessor library. 
+     \item Dataset is split to 80-20 ratio to account for train and test data.
+     \item Text features where vectorized using all the dataset vocabulary .
 
  \end{mcsection}
-     \includegraphics[scale=0.45]{Crowd.png}
-    \includegraphics[scale=0.4]{feature_Importance.png}
+     \includegraphics[scale=0.25]{Crowd.png}
+    \includegraphics[scale=0.25]{feature_Importance.png}
  
  \begin{mcsection}{Evaluation Data}
    
@@ -111,7 +112,7 @@
      \item The model has an accuracy of ACCDONOTMODIFY \%
   
 
- \end{mcsection}\pagebreak
+ \end{mcsection}
  
  
  
@@ -127,12 +128,13 @@
       \item Model performence can be improved by using a larger dataset.
  \end{mcsection}
  
- \textbf{Quantitative Analyses}
- 
- \includegraphics[scale=0.3]{Loss.png} \includegraphics[scale=0.3]{Confusion-matrix.png}
- \includegraphics[scale=0.2]{ROC_plot_Kfold.png}
- % Sample table inside tcolorbox
+\begin{mcsection}{Quantitative Analyses}
 
+ \includegraphics[scale=0.28]{Loss.png} \includegraphics[scale=0.27]{Confusion-matrix.png}
+ \includegraphics[scale=0.2]{ROC_plot_Kfold.png}
+ \end{mcsection}
+ % Sample table inside tcolorbox
+\end{multicols}
  
  } % end font size change
  \end{tcolorbox}
