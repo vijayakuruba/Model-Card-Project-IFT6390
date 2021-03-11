@@ -20,17 +20,17 @@ In terminal, execute the following commands:
 $ python run.py fetch
 ```
 2- Train the model
-
+```
 $ python run.py train
-
+```
 3- Evaluate the model
-
+```
 $ python run.py evaluate
-
+```
 4- Generate the model card and the report  
-
+```
 $ python run.py build_paper
-
+```
 # Versioning:
 Version 1.0
 
