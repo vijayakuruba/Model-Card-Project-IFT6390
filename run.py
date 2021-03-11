@@ -179,7 +179,7 @@ def train():
   #saving the predicted and the acutal results
   df = pd.DataFrame(y_pred_svm, columns=['predictions'])
   df['actual'] = y_test
-  df.to_csv("train.csv")
+  df.to_csv("predictions.csv")
 
 
   #plot_roc_curve(svmc, x_test, y_test)
@@ -272,7 +272,7 @@ def validate(x_transform,y,svmc,k_fold):
 # Compute the evaluation metrics and figures
 def evaluate():
   print("evaluating model!")  # replace this with code to evaluate what must be evaluated
-  df = pd.read_csv("train.csv", encoding='iso-8859-1')
+  df = pd.read_csv("predictions.csv", encoding='iso-8859-1')
   accuracy = accuracy_score(df['actual'], df['predictions']) * 100
   accuracy = round(accuracy, 2)
 
