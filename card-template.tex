@@ -2,15 +2,14 @@
  \usepackage[utf8]{inputenc}
  \usepackage[T1]{fontenc}
  \usepackage{graphicx}
- \usepackage{geometry}
+\usepackage[top=1.5in,bottom=1in,right=1in,left=1in,headheight=65pt]{geometry}
  \geometry{margin=0.8in}
 
  
  \setcounter{secnumdepth}{0}
 \setlength{\parindent}{0pt}
 \usepackage{fancyhdr}
-\usepackage[top=1.5in,bottom=1in,right=1in,left=1in,headheight=65pt]{geometry}
-\usepackage{geometry}
+
  \geometry{
  a4paper,
  total={170mm,257mm},
@@ -65,7 +64,7 @@
  
  \begin{multicols}{2}
  \begin{mcsection}{Model Details}
-    \item Developed by Houda Saadaoui and  Vijaya Lakshmi Kuruba as an academic requirement of the course IFT 6390 at the University of Montreal in Winter 2021.
+     \item Developed by Houda Saadaoui and  Vijaya Lakshmi Kuruba as an academic requirement of the course IFT 6390 at the University of Montreal in Winter 2021.
      \item  This is an exploratory SVM linear classifier which predicts the gender of the user based on its Tweets and profile description.  
      \item SKlearn API is utilised for model creation. We have used SGD classifier with Hinge loss with L2 penality which is equivalent to SVM linear classifier.
      \item Released under MIT License.
@@ -75,7 +74,6 @@
  \begin{mcsection}{Intended Use}
      \item Intended to be used for anyone interested  in the relationship between type of writing and gender. 
      \item Particularly intended for people who are interested in analysing social media use.
-  
 
  \end{mcsection}
  
@@ -103,6 +101,7 @@
      \item Text features where vectorized using all the dataset vocabulary .
 
  \end{mcsection}
+
      \includegraphics[scale=0.25]{Crowd.png}
     \includegraphics[scale=0.25]{feature_Importance.png}
  
@@ -118,7 +117,7 @@
  
  
  \begin{mcsection}{Ethical Considerations}
-     \item Because of the population in which the study was conducted, the results should be carefully generalized to more than one population.
+     \item Because of the population in which the study was conducted, the results should be carefully generalized to other populations.
      \item In no case can this model be used to make decisions involving gender discrimination.
  \end{mcsection}
  
@@ -129,7 +128,7 @@
  \end{mcsection}
  
 \begin{mcsection}{Quantitative Analyses}
-
+ \item
  \includegraphics[scale=0.28]{Loss.png} \includegraphics[scale=0.27]{Confusion-matrix.png}
  \includegraphics[scale=0.2]{ROC_plot_Kfold.png}
  \end{mcsection}
