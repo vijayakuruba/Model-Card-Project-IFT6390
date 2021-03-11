@@ -128,9 +128,6 @@ $$\mathbf{w}_{t+1} = \mathbf{w}_t - \eta\ \nabla L (\mathbf{w}_t) \; .$$
 
 Under some conditions on the step-size $\eta$ and the loss $L$, this algorithm is guaranteed to converge to a minimum of $L(w)$.
 
-$$\nabla L (\mathbf{w}_t)=\lambda \| \mathbf{w}\| \quad \text{if} \quad 1-yf(x)\geq 1$$
-$$$$
-
 $$\nabla L (\mathbf{w}_t)
 =
 \begin{cases}
@@ -188,7 +185,7 @@ Time complexity for testing is : O(Nd)
 N= Number of training examples\\
 d=Dimensions of the features
 
-Space complexity for training is : O(kd)
+Space complexity for training is : O(Nd)
 
 Space complexity for testing is : O(Nd)
 \end{document}
