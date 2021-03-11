@@ -16,9 +16,9 @@ This is an exploratory SVM linear classifier which predicts the gender of the us
 In terminal, execute the following commands:
 
 1- Fetch the dataset
-
+```
 $ python run.py fetch
-
+```
 2- Train the model
 
 $ python run.py train
