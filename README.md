@@ -1,6 +1,6 @@
 # Model-Card-Project-IFT6390
-Model card creation for Linear classifier
-This is an exploratory SVM linear classifier which predicts the gender of the user based on its Tweets and profile description.
+Model card creation for Linear classifier using CrowdFlower AI gender predictor dataset.
+This is an exploratory SVM linear classifier which predicts the gender of the user based on its Tweets and profile description. 
 
 # Prerequisites:
 1. Python 3 and later
